@@ -1,8 +1,8 @@
 package com.excelprocessor.service;
 
-
+import com.excelprocessor.transport.CampaignExcelPreviewDTO;
 import java.util.Map;
-
+import com.fasterxml.jackson.databind.JsonNode;
 public interface ExcelService {
 
 	/**
@@ -11,14 +11,8 @@ public interface ExcelService {
 	 * @param campaignAppDTO Campaign application context
 	 * @return ApiResponse containing preview data
 	 */
-	ApiResponse<Map<String, Object>> getExcelPreview(CampaignAppDTO campaignAppDTO);
+	byte[] generateDataRequestExcel(CampaignExcelPreviewDTO campaignExcelPreviewDTO);
 
-	/**
-	 * Generate Excel file bytes
-	 * 
-	 * @param campaignAppDTO Campaign application context
-	 * @return byte array representing the Excel file
-	 */
-	byte[] generateExcel(CampaignAppDTO campaignAppDTO);
+	public byte[] generateDataRequestExcel(String campaignID, String requestID);
 }
 

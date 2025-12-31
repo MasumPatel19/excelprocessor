@@ -44,10 +44,12 @@ public class ExcelController{
 	 * @return ResponseEntity with Excel file bytes
 	 */
 	@GetMapping("/excel/generate")
-	public ResponseEntity<byte[]> generateDataRequestExcel(HttpServletRequest request) {
+	public ResponseEntity<byte[]> generateDataRequestExcel(
+			@RequestParam String campaignID,
+			@RequestParam String requestID) {
 		// assuming that the request param has campaign details and request id and template id
 		// call generateExcel method from excel service
-		return excelService.generateDataRequestExcel(request.campaignID, request.requestID);
+		return excelService.generateDataRequestExcel(campaignID, requestID);
 	}
 }
 

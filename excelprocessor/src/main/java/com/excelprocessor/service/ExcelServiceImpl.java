@@ -11,6 +11,12 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import com.excelprocessor.transport.CampaignExcelPreviewDTO;
+import com.excelprocessor.model.Campaign;
+import com.excelprocessor.model.DataRequest;
+import com.excelprocessor.model.Template;
+import com.excelprocessor.processor.excel.ExcelProcesssorFactory;
+import com.excelprocessor.service.ExcelProcessorContext;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
@@ -23,7 +29,7 @@ public class ExcelServiceImpl implements ExcelService {
 	 * @param requestID
 	 * @return
 	 */
-	public ApiResponse<Map<String, Object>> generateDataRequestExcel(campaignID, requestID)
+	public byte[] generateDataRequestExcel(String campaignID, String requestID)
 	{
 			// get campaign data using ID
 			Campaign campaign = getCampaignFromId(campaignID);
@@ -35,7 +41,7 @@ public class ExcelServiceImpl implements ExcelService {
 			// create a ExcelProcessorContext
 			ExcelProcessorContext excelProcessorContext = new ExcelProcessorContext(campaign, dataRequest, template, formulaMap);
 
-			excel = new ExcelProcesssorFactory().createProcessor("DATA_REQUEST").processExcel(excelProcessorContext);
+			byte[] excel = new ExcelProcesssorFactory().createProcessor("DATA_REQUEST").processExcel(excelProcessorContext);
 
 			return excel;
 
@@ -49,10 +55,10 @@ public class ExcelServiceImpl implements ExcelService {
 	 * @return
 	 */
 	@Override
-	public ApiResponse<Map<String, Object>> generateDataRequestExcel(JsonNode campaign)
+	public byte[] generateDataRequestExcel(CampaignExcelPreviewDTO campaignExcelPreviewDTO)
 	{
 		// create a campaign domain object from the campaign JSON object
-		Campaign campaignObj = new Campaign(campaign);
+		Campaign campaignObj = new Campaign(campaignExcelPreviewDTO);
 
 		// since this is preview, the data request has not bee created yet.
 		DataRequest dataRequest = null;
@@ -67,27 +73,29 @@ public class ExcelServiceImpl implements ExcelService {
 	}
 
 	
-	@Override
-	private byte[] generateExcel(ExcelProcessorContext excelProcessorContext) {
-
-	}
-
-	
-
-
 	private Template getTemplateFromId(String templateId)
 	{
-		return CampaignService.getTemplateFromId(templateId);
+		// make API call to template service and get details of the template
+		// create Template domain object from the template details
+		// and return the domain object
+		return new Template();
 	}
 
 	private Campaign getCampaignFromId(String campaignId)
 	{
-		return CampaignService.getCampaignFromId(campaignId);
+		CampaignExcelPreviewDTO campaignExcelPreviewDTO = new CampaignExcelPreviewDTO();
+		// make API call to campaign service and get details of the campaign
+		// create Campaign DTO object from the campaign details
+		// and create Campaign domain object from the DTO and return the domain object
+		return new Campaign(campaignExcelPreviewDTO);
 	}
 
 	private DataRequest getDataRequestFromId(String requestId)
 	{
-		return CampaignService.getDataRequestFromId(requestId);
+		// make API call to campaign service and get details of the data request
+		// create DataRequest domain object from the data request details
+		// and return the domain object
+		return new DataRequest();
 	}
 }
 
