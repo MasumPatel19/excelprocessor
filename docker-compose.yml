@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: excelprocessor-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db-init:/docker-entrypoint-initdb.d
+    networks:
+      - excelprocessor-network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: excelprocessor-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - excelprocessor-network
+
+  excelprocessor:
+    build:
+      context: ./excelprocessor
+      dockerfile: Dockerfile
+    container_name: excelprocessor-app
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres?currentSchema=excelprocessing
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: admin
+      SPRING_RABBITMQ_PASSWORD: admin
+    ports:
+      - "8081:8080"
+    networks:
+      - excelprocessor-network
+
+  scheduler:
+    build:
+      context: ./scheduler
+      dockerfile: Dockerfile
+    container_name: scheduler-app
+    depends_on:
+      - excelprocessor
+    environment:
+      EXCELPROCESSOR_URL: http://excelprocessor:8080
+    ports:
+      - "8082:8080"
+    networks:
+      - excelprocessor-network
+
+  pluto:
+    build:
+      context: ./pluto
+      dockerfile: Dockerfile
+    container_name: pluto-app
+    depends_on:
+      - rabbitmq
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: admin
+      SPRING_RABBITMQ_PASSWORD: admin
+    ports:
+      - "8083:8080"
+    volumes:
+      - ./pluto/logs:/app/logs
+    networks:
+      - excelprocessor-network
+
+networks:
+  excelprocessor-network:
+    driver: bridge
+
+
