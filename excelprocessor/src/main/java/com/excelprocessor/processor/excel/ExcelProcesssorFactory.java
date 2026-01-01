@@ -1,5 +1,7 @@
 package com.excelprocessor.processor.excel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExcelProcesssorFactory {
 
+	private static final Logger logger = LogManager.getLogger(ExcelProcesssorFactory.class);
+
 	/**
 	 * Creates an ExcelProcessor instance based on the processor type string.
 	 * 
@@ -16,6 +20,7 @@ public class ExcelProcesssorFactory {
 	 * @return ExcelProcessor instance, or null if processorType is invalid
 	 */
 	public ExcelProcessor createProcessor(String processorType) {
+		logger.info("createProcessor method invoked");
 		if (processorType == null) {
 			return null;
 		}

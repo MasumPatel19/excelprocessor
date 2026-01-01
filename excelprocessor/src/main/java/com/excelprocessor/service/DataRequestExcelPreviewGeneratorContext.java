@@ -17,8 +17,8 @@ public class DataRequestExcelPreviewGeneratorContext extends ExcelProcessorConte
 
         // map DTO data to instance variables. Use methods provided by the parent class when needed.
 
-        Template template = getTemplateFromId(campaignExcelPreviewDTO.getPlatformTemplateId());
-		Map<String, JsonNode> formulaMap = template.getFormulaMap();
+        this.template = getTemplateFromId(campaignExcelPreviewDTO.getPlatformTemplateId());
+		this.formulaMap = template.getFormulaMap();
 
         // GETT formulae need data from campaignexcelpreviewdto object. i.e the instance variables of this DTO object. Add this data to the formula map JSON.
     }

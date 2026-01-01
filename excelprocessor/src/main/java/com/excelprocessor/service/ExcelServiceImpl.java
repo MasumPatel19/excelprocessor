@@ -1,26 +1,14 @@
 package com.excelprocessor.service;
 
-import com.excelprocessor.service.ExcelService;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 import com.excelprocessor.transport.CampaignExcelPreviewDTO;
-import com.excelprocessor.model.Campaign;
-import com.excelprocessor.model.DataRequest;
-import com.excelprocessor.model.Template;
 import com.excelprocessor.processor.excel.ExcelProcesssorFactory;
-import com.excelprocessor.service.ExcelProcessorContext;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
-
+	
 	private static final Logger logger = LogManager.getLogger(ExcelServiceImpl.class);
 	
 	/**
@@ -31,6 +19,7 @@ public class ExcelServiceImpl implements ExcelService {
 	 */
 	public byte[] generateDataRequestExcel(String campaignID, String requestID)
 	{
+		logger.info("generateDataRequestExcel method invoked with campaignID: {}, requestID: {}", campaignID, requestID);
 
 			// create a ExcelProcessorContext
 			ExcelProcessorContext excelProcessorContext = new DataRequestExcelGeneratorContext(campaignID, requestID);

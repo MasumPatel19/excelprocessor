@@ -1,5 +1,7 @@
 package com.excelprocessor.processor.formula;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import java.util.Map;
@@ -12,11 +14,14 @@ import java.time.LocalDateTime;
  */
 public class GetFormula implements Formula {
 
+	private static final Logger logger = LogManager.getLogger(GetFormula.class);
+
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
 	@Override
 	public String calculate() {
+		logger.info("calculate method invoked");
 		Map<String, Object> message = new HashMap<>();
         message.put("id", UUID.randomUUID().toString());
         message.put("timestamp", LocalDateTime.now().toString());

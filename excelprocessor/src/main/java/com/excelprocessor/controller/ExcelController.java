@@ -7,12 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 public class ExcelController{
@@ -29,7 +26,7 @@ public class ExcelController{
 	 */
 	@GetMapping("/excel/preview")
 	public ResponseEntity<byte[]> generatePreviewExcel(HttpServletRequest request) {
-		
+		logger.info("generatePreviewExcel method invoked");
 		// generateDataRequestExcel is an overloaded method. with CampaignExcelPreviewDTO object as input
 		// will create the preview version of the data request excel file
 		byte[] result = excelService.generateDataRequestExcel(new CampaignExcelPreviewDTO(request));
@@ -47,8 +44,9 @@ public class ExcelController{
 	 * Or this may be called by the scheduler when it is time to send a data request to the portco
 	 * as part of a campaign with reoccuring schedule
 	 * 
-	 * @param request HTTP request containing headers for context
-	 * @return ResponseEntity with Excel file bytes
+	 * @param campaignID Campaign ID
+	 * @param requestID Data Request ID
+	 * @return Byte array of the data request excel file ready to be sent to the Portco
 	 */
 	@GetMapping("/excel/generate")
 	public ResponseEntity<byte[]> generateDataRequestExcel(

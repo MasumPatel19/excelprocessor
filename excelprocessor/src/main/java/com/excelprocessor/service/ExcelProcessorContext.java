@@ -3,21 +3,8 @@ package com.excelprocessor.service;
 import com.excelprocessor.model.Campaign;
 import com.excelprocessor.model.DataRequest;
 import com.excelprocessor.model.Template;
-import com.fasterxml.jackson.databind.JsonNode;
-
-import java.util.Map;
 
 public abstract class  ExcelProcessorContext {
-
-	// fields to hold the campaign metadata
-	private Campaign campaign;
-	// fields required to hold request data
-	private DataRequest dataRequest;
-	// template id
-	private Template template;
-	// formula map
-	private Map<String, JsonNode> formulaMap;
-
 
 	protected Template getTemplateFromId(String templateId)
 	{

@@ -1,5 +1,7 @@
 package com.excelprocessor.processor.formula;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FormulaFactory {
 
+	private static final Logger logger = LogManager.getLogger(FormulaFactory.class);
+
 	/**
 	 * Creates a Formula instance based on the formula type string.
 	 * 
@@ -16,6 +20,7 @@ public class FormulaFactory {
 	 * @return Formula instance, or null if formulaType is invalid
 	 */
 	public Formula createFormula(String formulaType) {
+		logger.info("createFormula method invoked");
 		if (formulaType == null) {
 			return null;
 		}

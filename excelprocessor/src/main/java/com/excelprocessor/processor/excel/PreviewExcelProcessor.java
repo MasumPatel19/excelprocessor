@@ -1,6 +1,7 @@
 package com.excelprocessor.processor.excel;
 
-import com.excelprocessor.processor.formula.Formula;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.excelprocessor.service.ExcelProcessorContext;
 import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -8,11 +9,13 @@ import com.excelprocessor.service.DataRequestExcelPreviewGeneratorContext;
 
 public class PreviewExcelProcessor extends ExcelProcessorAbstract{
 
+	private static final Logger logger = LogManager.getLogger(PreviewExcelProcessor.class);
 
     DataRequestExcelPreviewGeneratorContext dataRequestExcelPreviewGeneratorContext;
     
 	@Override
 	public byte[] processExcel(ExcelProcessorContext excelProcessorContext) {
+		logger.info("processExcel method invoked");
 
         if (excelProcessorContext instanceof DataRequestExcelPreviewGeneratorContext) {
             dataRequestExcelPreviewGeneratorContext = (DataRequestExcelPreviewGeneratorContext) excelProcessorContext;
