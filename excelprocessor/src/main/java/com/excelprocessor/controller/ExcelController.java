@@ -23,16 +23,15 @@ public class ExcelController{
 	private ExcelService excelService;
 
 	/**
-	 * Preview endpoint for Excel data
-	 * Returns preview/metadata information about the Excel export
-	 * 
+	 * Returns preview version of data request excel file
 	 * @param request HTTP request containing headers for context
-	 * @return ApiResponse with preview data
+	 * @return Byte array of the preview version of the data request excel file
 	 */
 	@GetMapping("/excel/preview")
 	public ResponseEntity<byte[]> generatePreviewExcel(HttpServletRequest request) {
 		
-		// call generateDataRequestExcel method from excel service with preview flag true
+		// generateDataRequestExcel is an overloaded method. with CampaignExcelPreviewDTO object as input
+		// will create the preview version of the data request excel file
 		byte[] result = excelService.generateDataRequestExcel(new CampaignExcelPreviewDTO(request));
 		return ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_OCTET_STREAM)
@@ -42,8 +41,11 @@ public class ExcelController{
 
 
 	/**
-	 * Excel download endpoint
-	 * Returns Excel file for download
+	 * Returns data request excel file, ready to be sent to the Portco
+	 * 
+	 * This will be called once after creation of the campaign and data request.
+	 * Or this may be called by the scheduler when it is time to send a data request to the portco
+	 * as part of a campaign with reoccuring schedule
 	 * 
 	 * @param request HTTP request containing headers for context
 	 * @return ResponseEntity with Excel file bytes

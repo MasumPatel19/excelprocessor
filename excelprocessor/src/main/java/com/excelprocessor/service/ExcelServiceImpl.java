@@ -31,15 +31,9 @@ public class ExcelServiceImpl implements ExcelService {
 	 */
 	public byte[] generateDataRequestExcel(String campaignID, String requestID)
 	{
-			// get campaign data using ID
-			Campaign campaign = getCampaignFromId(campaignID);
-			// get request data using ID
-			DataRequest dataRequest = getDataRequestFromId(requestID);
-			// get template id from campaign id
-			Template template = getTemplateFromId(campaign.getTemplateId());
-			Map<String, JsonNode> formulaMap = template.getFormulaMap();
+
 			// create a ExcelProcessorContext
-			ExcelProcessorContext excelProcessorContext = new ExcelProcessorContext(campaign, dataRequest, template, formulaMap);
+			ExcelProcessorContext excelProcessorContext = new DataRequestExcelGeneratorContext(campaignID, requestID);
 
 			byte[] excel = new ExcelProcesssorFactory().createProcessor("DATA_REQUEST").processExcel(excelProcessorContext);
 
@@ -57,15 +51,9 @@ public class ExcelServiceImpl implements ExcelService {
 	@Override
 	public byte[] generateDataRequestExcel(CampaignExcelPreviewDTO campaignExcelPreviewDTO)
 	{
-		// create a campaign domain object from the campaign JSON object
-		Campaign campaignObj = new Campaign(campaignExcelPreviewDTO);
-
-		// since this is preview, the data request has not bee created yet.
-		DataRequest dataRequest = null;
-		Template template = getTemplateFromId(campaignObj.getTemplateId());
-		Map<String, JsonNode> formulaMap = template.getFormulaMap();
+		
 		// create a ExcelProcessorContext
-		ExcelProcessorContext excelProcessorContext = new ExcelProcessorContext(campaignObj, dataRequest, template, formulaMap);
+		ExcelProcessorContext excelProcessorContext = new DataRequestExcelPreviewGeneratorContext(campaignExcelPreviewDTO);
 
 		byte[] excel = new ExcelProcesssorFactory().createProcessor("PREVIEW").processExcel(excelProcessorContext);
 
@@ -73,30 +61,7 @@ public class ExcelServiceImpl implements ExcelService {
 	}
 
 	
-	private Template getTemplateFromId(String templateId)
-	{
-		// make API call to template service and get details of the template
-		// create Template domain object from the template details
-		// and return the domain object
-		return new Template();
-	}
 
-	private Campaign getCampaignFromId(String campaignId)
-	{
-		
-		// make API call to campaign service and get details of the campaign
-		// create Campaign DTO object from the campaign details
-		// and create Campaign domain object from the DTO and return the domain object
-		return new Campaign();
-	}
-
-	private DataRequest getDataRequestFromId(String requestId)
-	{
-		// make API call to campaign service and get details of the data request
-		// create DataRequest domain object from the data request details
-		// and return the domain object
-		return new DataRequest();
-	}
 }
 
 

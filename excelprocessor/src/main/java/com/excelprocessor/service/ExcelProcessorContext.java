@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Map;
 
-public class ExcelProcessorContext {
+public abstract class  ExcelProcessorContext {
 
 	// fields to hold the campaign metadata
 	private Campaign campaign;
@@ -19,26 +19,28 @@ public class ExcelProcessorContext {
 	private Map<String, JsonNode> formulaMap;
 
 
-	public ExcelProcessorContext(Campaign campaign, DataRequest dataRequest, Template template, Map<String, JsonNode> formulaMap) {
-		this.campaign = campaign;
-		this.dataRequest = dataRequest;
-		this.template = template;
-		this.formulaMap = formulaMap;
+	protected Template getTemplateFromId(String templateId)
+	{
+		// make API call to template service and get details of the template
+		// create Template domain object from the template details
+		// and return the domain object
+		return new Template();
 	}
 
-	public Map<String, JsonNode> getFormulaMap() {
-		return formulaMap;
+	protected Campaign getCampaignFromId(String campaignId)
+	{
+		
+		// make API call to campaign service and get details of the campaign
+		// create Campaign DTO object from the campaign details
+		// and create Campaign domain object from the DTO and return the domain object
+		return new Campaign();
 	}
 
-	public Template getTemplate() {
-		return template;
-	}
-
-	public Campaign getCampaign() {
-		return campaign;
-	}
-
-	public DataRequest getDataRequest() {
-		return dataRequest;
-	}
+	protected DataRequest getDataRequestFromId(String requestId)
+	{
+		// make API call to campaign service and get details of the data request
+		// create DataRequest domain object from the data request details
+		// and return the domain object
+		return new DataRequest();
+	}	
 }
