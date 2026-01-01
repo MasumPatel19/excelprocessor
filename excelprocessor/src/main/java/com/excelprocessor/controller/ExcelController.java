@@ -24,7 +24,7 @@ public class ExcelController{
 	 * @param request HTTP request containing headers for context
 	 * @return Byte array of the preview version of the data request excel file
 	 */
-	@GetMapping("/excel/preview")
+	@GetMapping("request/excel/generate/preview")
 	public ResponseEntity<byte[]> generatePreviewExcel(HttpServletRequest request) {
 		logger.info("generatePreviewExcel method invoked");
 		// generateDataRequestExcel is an overloaded method. with CampaignExcelPreviewDTO object as input
@@ -48,7 +48,7 @@ public class ExcelController{
 	 * @param requestID Data Request ID
 	 * @return Byte array of the data request excel file ready to be sent to the Portco
 	 */
-	@GetMapping("/excel/generate")
+	@GetMapping("/request/excel/generate")
 	public ResponseEntity<byte[]> generateDataRequestExcel(
 			@RequestParam String campaignID,
 			@RequestParam String requestID) {
@@ -59,6 +59,21 @@ public class ExcelController{
 				.contentType(MediaType.APPLICATION_OCTET_STREAM)
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"excel.xlsx\"")
 				.body(result);
+	}
+
+	/**
+	 * Processes the data response excel file
+	 * @param campaignID Campaign ID
+	 * @param requestID Data Request ID
+	 * @return String indicating the result of the data response excel processing
+	 */
+	@GetMapping("response/excel/process")
+	public ResponseEntity<String> processDataResponseExcel(
+			@RequestParam String campaignID,
+			@RequestParam String requestID) {
+		// TODO: Need to implement this method
+		String result = "Data response excel processed successfully";
+		return ResponseEntity.ok().body(result);
 	}
 }
 
