@@ -28,7 +28,7 @@ public abstract class ExcelProcessorAbstract implements ExcelProcessor{
         // The formula processor objects created by the factory will be short lived objects 
         // because its reference is not propogated further. Once the calculate method exists, the object is garbage collected in 
         // the next cycle. 
-		return (new FormulaFactory().createFormula(formula.get("type").asText())).calculate();
+		return (new FormulaFactory().createFormula(formula.get("type").asText())).calculate(formula.get("formulaString").asText());
 		
 	}
 

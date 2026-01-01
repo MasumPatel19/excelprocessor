@@ -20,13 +20,15 @@ public class GetFormula implements Formula {
     private RabbitTemplate rabbitTemplate;
 
 	@Override
-	public String calculate() {
-		logger.info("calculate method invoked");
+	public String calculate(String formulaString) {
+
+		//TODO: Hard-coding this for initial test purposes. 
+		logger.info("GET called. With FormulaString: " + formulaString);
 		Map<String, Object> message = new HashMap<>();
         message.put("id", UUID.randomUUID().toString());
         message.put("timestamp", LocalDateTime.now().toString());
         message.put("status", "PROCESSING");
-        message.put("details", "Excel processing request received");
+        message.put("details", "GET called. With FormulaString: " + formulaString);
 
         rabbitTemplate.convertAndSend("excel-processing-queue", message);
         return null; // TODO: implement proper return value

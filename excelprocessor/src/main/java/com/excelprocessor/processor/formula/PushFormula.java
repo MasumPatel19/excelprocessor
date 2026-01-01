@@ -11,7 +11,7 @@ public class PushFormula implements Formula {
 	private static final Logger logger = LogManager.getLogger(PushFormula.class);
 
 	@Override
-	public String calculate() {
+	public String calculate(String formulaString) {
 		logger.info("calculate method invoked");
 		return null;
 	}

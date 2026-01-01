@@ -11,7 +11,7 @@ public class GettFormula implements Formula {
 	private static final Logger logger = LogManager.getLogger(GettFormula.class);
 
 	@Override
-	public String calculate() {
+	public String calculate(String formulaString) {
 		logger.info("calculate method invoked");
 		return null;
 	}

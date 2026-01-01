@@ -37,7 +37,8 @@ public class PreviewExcelProcessor extends ExcelProcessorAbstract{
 
     protected Map<String, JsonNode> preprocessFormulaMap(Map<String, JsonNode> formulaMap)
 	{
-		// Perform ID lookups for get formulae
+		// TODO: Hard-coding this for initial test purposes. Returning the formula map without any preprocessing.
+        // TODO: Perform ID lookups for get formulae 
 
         return formulaMap;
 	}

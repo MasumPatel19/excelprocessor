@@ -11,6 +11,11 @@ public abstract class  ExcelProcessorContext {
 		// make API call to template service and get details of the template
 		// create Template domain object from the template details
 		// and return the domain object
+
+		// TODO: Hard-coding this for initial test purposes. 
+		// TODO: Returning empty template for initial test purposes. 
+		// TODO:Will be replaced with actual data from the template service. 
+
 		return new Template();
 	}
 

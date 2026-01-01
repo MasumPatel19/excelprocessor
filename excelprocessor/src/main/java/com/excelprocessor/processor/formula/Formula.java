@@ -11,7 +11,7 @@ public interface Formula {
 	 * 
 	 * @return the calculated result as a String
 	 */
-	String calculate();
+	String calculate(String formulaString);
 	String getType();
 }
 

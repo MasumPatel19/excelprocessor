@@ -20,35 +20,75 @@ import java.time.LocalDate;
  */
 public class CampaignExcelPreviewDTO {
     
-    @NotBlank(message = "entity is required")
     private String entity;
-    @NotBlank(message = "businessUnit is required")
     private String businessUnit;
-    @NotBlank(message = "campaignTag is required")
     private String campaignTag;
-    @NotBlank(message = "modeOfCollection is required")
     private String modeOfCollection;
-    @NotBlank(message = "documents is required")
     private String documents;
-    @NotBlank(message = "platformTemplateId is required")
     private String platformTemplateId;
-    @NotBlank(message = "version is required")
     private String version;
-    @NotBlank(message = "periodType is required")
     private String periodType;
-    @NotNull(message = "reportingDate is required")
     private LocalDate reportingDate;
-    @NotBlank(message = "periodRangeDate is required")
     private String periodRangeDate;
-    @NotBlank(message = "periodRangeNumber is required")
-    @Min(value = 1, message = "periodRangeNumber must be greater than 0")
     private Integer periodRangeNumber;
-    @NotBlank(message = "orgId is required")
     private String orgId;
     
     
+    public CampaignExcelPreviewDTO() {
+        // Default constructor for JSON deserialization
+    }
+    
     public CampaignExcelPreviewDTO(HttpServletRequest request) {
         // extract the data from the request body JSON and store in the instance variables
+    }
+    
+    // Setters for JSON deserialization
+    public void setEntity(String entity) {
+        this.entity = entity;
+    }
+    
+    public void setBusinessUnit(String businessUnit) {
+        this.businessUnit = businessUnit;
+    }
+    
+    public void setCampaignTag(String campaignTag) {
+        this.campaignTag = campaignTag;
+    }
+    
+    public void setModeOfCollection(String modeOfCollection) {
+        this.modeOfCollection = modeOfCollection;
+    }
+    
+    public void setDocuments(String documents) {
+        this.documents = documents;
+    }
+    
+    public void setPlatformTemplateId(String platformTemplateId) {
+        this.platformTemplateId = platformTemplateId;
+    }
+    
+    public void setVersion(String version) {
+        this.version = version;
+    }
+    
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType;
+    }
+    
+    public void setReportingDate(LocalDate reportingDate) {
+        this.reportingDate = reportingDate;
+    }
+    
+    public void setPeriodRangeDate(String periodRangeDate) {
+        this.periodRangeDate = periodRangeDate;
+    }
+    
+    public void setPeriodRangeNumber(Integer periodRangeNumber) {
+        this.periodRangeNumber = periodRangeNumber;
+    }
+    
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
     }
 
     public String getEntity() {
