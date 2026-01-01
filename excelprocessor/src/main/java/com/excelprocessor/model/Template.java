@@ -114,17 +114,17 @@ public class Template {
         formulaMap.put("A18", a18Node);
         
         ObjectNode a19Node = objectMapper.createObjectNode();
-		a19Node.put("type", "GET");
+		a19Node.put("type", "GETT");
         a19Node.put("formulaString", "=A18+1");
         formulaMap.put("A19", a19Node);
         
         ObjectNode a20Node = objectMapper.createObjectNode();
-		a20Node.put("type", "GET");
+		a20Node.put("type", "PUSH");
         a20Node.put("formulaString", "=A19+1");
         formulaMap.put("A20", a20Node);
         
         ObjectNode a21Node = objectMapper.createObjectNode();
-		a21Node.put("type", "GET");
+		a21Node.put("type", "PUSHT");
         a21Node.put("formulaString", "=A20+1");
         formulaMap.put("A21", a21Node);
 

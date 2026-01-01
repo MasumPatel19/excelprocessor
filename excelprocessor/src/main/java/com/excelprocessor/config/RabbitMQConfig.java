@@ -6,18 +6,18 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+// @Configuration
 public class RabbitMQConfig {
 
-    @Bean
-    public Queue excelProcessingQueue() {
-        return new Queue("excel-processing-queue", true);
-    }
+    // @Bean
+    // public Queue excelProcessingQueue() {
+    //     return new Queue("excel-processing-queue", true);
+    // }
 
-    @Bean
-    public MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
+    // @Bean
+    // public MessageConverter jsonMessageConverter() {
+    //     return new Jackson2JsonMessageConverter();
+    // }
 }
 
 

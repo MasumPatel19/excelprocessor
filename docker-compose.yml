@@ -33,16 +33,11 @@ services:
       dockerfile: Dockerfile
     container_name: excelprocessor-app
     depends_on:
-      - rabbitmq
       - postgres
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres?currentSchema=excelprocessing
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_RABBITMQ_HOST: rabbitmq
-      SPRING_RABBITMQ_PORT: 5672
-      SPRING_RABBITMQ_USERNAME: admin
-      SPRING_RABBITMQ_PASSWORD: admin
     ports:
       - "8081:8080"
     networks:

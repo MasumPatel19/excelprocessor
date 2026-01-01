@@ -12,8 +12,8 @@ public class PushFormula implements Formula {
 
 	@Override
 	public String calculate(String formulaString) {
-		logger.info("calculate method invoked");
-		return null;
+		logger.info("PUSH called. With FormulaString: " + formulaString);
+		return "1"; // TODO: implement proper return value
 	}
 
 	@Override

@@ -12,8 +12,8 @@ public class GettFormula implements Formula {
 
 	@Override
 	public String calculate(String formulaString) {
-		logger.info("calculate method invoked");
-		return null;
+		logger.info("GETT called. With FormulaString: " + formulaString);
+		return "1"; // TODO: implement proper return value
 	}
 
 	@Override
