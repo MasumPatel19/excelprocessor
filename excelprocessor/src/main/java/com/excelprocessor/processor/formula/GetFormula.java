@@ -1,6 +1,11 @@
 package com.excelprocessor.processor.formula;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.UUID;
+import java.time.LocalDateTime;
 
 /**
  * Implementation of Formula interface for GET-type formulas.
@@ -19,6 +24,7 @@ public class GetFormula implements Formula {
         message.put("details", "Excel processing request received");
 
         rabbitTemplate.convertAndSend("excel-processing-queue", message);
+        return null; // TODO: implement proper return value
 	}
 
 	@Override

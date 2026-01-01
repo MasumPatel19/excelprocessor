@@ -1,6 +1,7 @@
 package com.excelprocessor.controller;
 
 import com.excelprocessor.service.ExcelService;
+import com.excelprocessor.transport.CampaignExcelPreviewDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,10 +30,14 @@ public class ExcelController{
 	 * @return ApiResponse with preview data
 	 */
 	@GetMapping("/excel/preview")
-	public ApiResponse<Map<String, Object>> generatePreviewExcel(HttpServletRequest request) {
+	public ResponseEntity<byte[]> generatePreviewExcel(HttpServletRequest request) {
 		
 		// call generateDataRequestExcel method from excel service with preview flag true
-		return excelService.generateDataRequestExcel(new CampaignExcelPreviewDTO(request));
+		byte[] result = excelService.generateDataRequestExcel(new CampaignExcelPreviewDTO(request));
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"preview.xlsx\"")
+				.body(result);
 	}
 
 
@@ -49,7 +54,11 @@ public class ExcelController{
 			@RequestParam String requestID) {
 		// assuming that the request param has campaign details and request id and template id
 		// call generateExcel method from excel service
-		return excelService.generateDataRequestExcel(campaignID, requestID);
+		byte[] result = excelService.generateDataRequestExcel(campaignID, requestID);
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"excel.xlsx\"")
+				.body(result);
 	}
 }
 

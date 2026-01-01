@@ -67,7 +67,7 @@ public class ExcelServiceImpl implements ExcelService {
 		// create a ExcelProcessorContext
 		ExcelProcessorContext excelProcessorContext = new ExcelProcessorContext(campaignObj, dataRequest, template, formulaMap);
 
-		excel = new ExcelProcesssorFactory().createProcessor("PREVIEW").processExcel(excelProcessorContext);
+		byte[] excel = new ExcelProcesssorFactory().createProcessor("PREVIEW").processExcel(excelProcessorContext);
 
 		return excel;
 	}
@@ -83,11 +83,11 @@ public class ExcelServiceImpl implements ExcelService {
 
 	private Campaign getCampaignFromId(String campaignId)
 	{
-		CampaignExcelPreviewDTO campaignExcelPreviewDTO = new CampaignExcelPreviewDTO();
+		
 		// make API call to campaign service and get details of the campaign
 		// create Campaign DTO object from the campaign details
 		// and create Campaign domain object from the DTO and return the domain object
-		return new Campaign(campaignExcelPreviewDTO);
+		return new Campaign();
 	}
 
 	private DataRequest getDataRequestFromId(String requestId)

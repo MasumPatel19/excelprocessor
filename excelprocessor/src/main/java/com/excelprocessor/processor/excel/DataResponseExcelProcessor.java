@@ -21,6 +21,7 @@ public class DataResponseExcelProcessor extends ExcelProcessorAbstract {
         // process the formula map
         Map<String, String> resultMap = processFormulaMap(formulaMap);
 
+        return new byte[0];
 	}
 
     protected Map<String, JsonNode> preprocessFormulaMap(Map<String, JsonNode> formulaMap)

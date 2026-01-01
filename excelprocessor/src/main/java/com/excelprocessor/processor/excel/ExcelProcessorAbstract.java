@@ -4,13 +4,14 @@ import com.excelprocessor.processor.formula.Formula;
 import java.util.Map;
 import java.util.stream.Collectors;
 import com.excelprocessor.processor.formula.FormulaFactory;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public abstract class ExcelProcessorAbstract implements ExcelProcessor{
 
-    protected abstract Map<String, Formula> preprocessFormulaMap(Map<String, Formula> formulaMap);
+    protected abstract Map<String, JsonNode> preprocessFormulaMap(Map<String, JsonNode> formulaMap);
 	
 
-	protected Map<String, String> processFormulaMap(Map<String, Formula> formulaMap)
+	protected Map<String, String> processFormulaMap(Map<String, JsonNode> formulaMap)
 	{
 			
 		// process formula map entries in parallel using parallel streams
@@ -23,13 +24,19 @@ public abstract class ExcelProcessorAbstract implements ExcelProcessor{
 			));
 	}
 
-	protected String calculateFormula(Formula formula)
+	protected String calculateFormula(JsonNode formula)
 	{
         // The formula processor objects created by the factory will be short lived objects 
         // because its reference is not propogated further. Once the calculate method exists, the object is garbage collected in 
         // the next cycle. 
-		return (new FormulaFactory().createFormula(formula.getType())).calculate();
+		return (new FormulaFactory().createFormula(formula.get("type").asText())).calculate();
 		
+	}
+
+	protected byte[] insertResultMapIntoExcel(Map<String, String> resultMap)
+	{
+        // insert the result map into the excel
+        return new byte[0];
 	}
 
 }
