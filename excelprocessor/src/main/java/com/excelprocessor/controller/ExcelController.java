@@ -2,7 +2,12 @@ package com.excelprocessor.controller;
 
 import com.excelprocessor.service.ExcelService;
 import com.excelprocessor.transport.CampaignExcelPreviewDTO;
-import jakarta.servlet.http.HttpServletRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Tag(name = "Excel Processing", description = "APIs for generating and processing Excel files")
 public class ExcelController{
 
 	private static final Logger logger = LogManager.getLogger(ExcelController.class);
@@ -26,7 +32,15 @@ public class ExcelController{
 	 * @return Byte array of the preview version of the data request excel file
 	 */
 	@PostMapping("request/excel/generate/preview")
-	public ResponseEntity<byte[]> generatePreviewExcel(@Valid @RequestBody CampaignExcelPreviewDTO campaignExcelPreviewDTO) {
+	@Operation(summary = "Generate preview Excel", description = "Generates a preview version of the data request Excel file")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Excel file generated successfully",
+					content = @Content(mediaType = "application/octet-stream")),
+			@ApiResponse(responseCode = "400", description = "Invalid input data")
+	})
+	public ResponseEntity<byte[]> generatePreviewExcel(
+			@Parameter(description = "Campaign preview data", required = true)
+			@Valid @RequestBody CampaignExcelPreviewDTO campaignExcelPreviewDTO) {
 		logger.info("generatePreviewExcel method invoked");
 		// generateDataRequestExcel is an overloaded method. with CampaignExcelPreviewDTO object as input
 		// will create the preview version of the data request excel file
@@ -50,8 +64,16 @@ public class ExcelController{
 	 * @return Byte array of the data request excel file ready to be sent to the Portco
 	 */
 	@GetMapping("/request/excel/generate")
+	@Operation(summary = "Generate data request Excel", description = "Generates a data request Excel file ready to be sent to the Portco")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Excel file generated successfully",
+					content = @Content(mediaType = "application/octet-stream")),
+			@ApiResponse(responseCode = "400", description = "Invalid parameters")
+	})
 	public ResponseEntity<byte[]> generateDataRequestExcel(
+			@Parameter(description = "Campaign ID", required = true)
 			@RequestParam String campaignID,
+			@Parameter(description = "Data Request ID", required = true)
 			@RequestParam String requestID) {
 		// assuming that the request param has campaign details and request id and template id
 		// call generateExcel method from excel service
@@ -69,8 +91,15 @@ public class ExcelController{
 	 * @return String indicating the result of the data response excel processing
 	 */
 	@GetMapping("response/excel/process")
+	@Operation(summary = "Process data response Excel", description = "Processes the data response Excel file")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Excel file processed successfully"),
+			@ApiResponse(responseCode = "400", description = "Invalid parameters")
+	})
 	public ResponseEntity<String> processDataResponseExcel(
+			@Parameter(description = "Campaign ID", required = true)
 			@RequestParam String campaignID,
+			@Parameter(description = "Data Request ID", required = true)
 			@RequestParam String requestID) {
 		// TODO: Need to implement this method
 		String result = "Data response excel processed successfully";
