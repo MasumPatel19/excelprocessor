@@ -16,6 +16,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.excelprocessor.service.OdsAnalysisService;
+import java.util.Map;
+import java.io.IOException;
 
 @RestController
 @Tag(name = "Excel Processing", description = "APIs for generating and processing Excel files")
@@ -25,6 +29,9 @@ public class ExcelController{
 
 	@Autowired
 	private ExcelService excelService;
+
+	@Autowired
+	private OdsAnalysisService odsAnalysisService;
 
 	/**
 	 * Returns preview version of data request excel file
@@ -104,6 +111,60 @@ public class ExcelController{
 		// TODO: Need to implement this method
 		String result = "Data response excel processed successfully";
 		return ResponseEntity.ok().body(result);
+	}
+
+	/**
+	 * Analyzes an ODS file to count formula occurrences and writes analysis to JSON file
+	 * @param file The ODS file to analyze
+	 * @return Response containing analysis results and JSON file path
+	 */
+	@PostMapping(value = "/ods/analyze", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@Operation(summary = "Analyze ODS file", description = "Analyzes an ODS file to count formula occurrences and saves the analysis to a JSON file")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "ODS file analyzed successfully"),
+			@ApiResponse(responseCode = "400", description = "Invalid file or file processing error")
+	})
+	public ResponseEntity<Map<String, Object>> analyzeOdsFile(
+			@Parameter(description = "ODS file to analyze", required = true)
+			@RequestParam("file") MultipartFile file) {
+		logger.info("analyzeOdsFile method invoked for file: {}", file.getOriginalFilename());
+
+		try {
+			// Validate file
+			if (file.isEmpty()) {
+				return ResponseEntity.badRequest()
+						.body(Map.of("error", "File is empty"));
+			}
+
+			if (!file.getOriginalFilename().toLowerCase().endsWith(".ods")) {
+				return ResponseEntity.badRequest()
+						.body(Map.of("error", "File must be an ODS file (.ods extension)"));
+			}
+
+			// Analyze the ODS file
+			Map<String, Object> analysisResult = odsAnalysisService.analyzeOdsFile(
+					file.getInputStream(), 
+					file.getOriginalFilename()
+			);
+
+			// Write analysis to JSON file
+			String jsonFilePath = odsAnalysisService.writeAnalysisToJson(analysisResult);
+
+			// Add JSON file path to response
+			analysisResult.put("jsonFilePath", jsonFilePath);
+			analysisResult.put("status", "success");
+
+			return ResponseEntity.ok(analysisResult);
+
+		} catch (IOException e) {
+			logger.error("Error processing ODS file: {}", e.getMessage(), e);
+			return ResponseEntity.badRequest()
+					.body(Map.of("error", "Failed to process ODS file: " + e.getMessage()));
+		} catch (Exception e) {
+			logger.error("Unexpected error analyzing ODS file: {}", e.getMessage(), e);
+			return ResponseEntity.badRequest()
+					.body(Map.of("error", "Unexpected error: " + e.getMessage()));
+		}
 	}
 }
 
