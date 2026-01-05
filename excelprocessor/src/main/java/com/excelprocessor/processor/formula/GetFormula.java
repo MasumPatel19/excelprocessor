@@ -32,6 +32,10 @@ public class GetFormula implements Formula {
 
         // rabbitTemplate.convertAndSend("excel-processing-queue", message);
         return "1"; // TODO: implement proper return value
+		//  Evaluate the expression and return result
+		//	Example calculations:
+		//	A1: "entity" → "xxx" (from preprocessing)
+		//	A2: "=A1+1" → "xxx1" (Excel formula evaluation)
 	}
 
 	@Override
