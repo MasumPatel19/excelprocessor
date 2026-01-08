@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.excelprocessor.service.OdsAnalysisService;
+import com.excelprocessor.service.PreprocessingService;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.io.IOException;
 
@@ -32,6 +36,9 @@ public class ExcelController{
 
 	@Autowired
 	private OdsAnalysisService odsAnalysisService;
+
+	@Autowired
+	private PreprocessingService preprocessingService;
 
 	/**
 	 * Returns preview version of data request excel file
@@ -86,6 +93,8 @@ public class ExcelController{
 		// TODO:  Validates campaignID and requestID parameters
 		// call generateExcel method from excel service
 		byte[] result = excelService.generateDataRequestExcel(campaignID, requestID);
+		//  Generate dynamic filename based on campaign/request ID
+		//  Format: campaign_{campaignID}_request_{requestID}.xlsx
 		return ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_OCTET_STREAM)
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"excel.xlsx\"")
@@ -165,6 +174,32 @@ public class ExcelController{
 			logger.error("Unexpected error analyzing ODS file: {}", e.getMessage(), e);
 			return ResponseEntity.badRequest()
 					.body(Map.of("error", "Unexpected error: " + e.getMessage()));
+		}
+	}
+
+	// Temporary endpoint to collect preprocessing data from external-service
+	@GetMapping("/preprocessing")
+	@Operation(summary = "Collect preprocessing data", description = "Calls all external pluto-service APIs and collects responses for preprocessing. Temporary endpoint.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Preprocessing data collected successfully"),
+			@ApiResponse(responseCode = "500", description = "Error during preprocessing data collection")
+	})
+	public ResponseEntity<Map<String, Object>> collectPreprocessingData(HttpServletRequest request) {
+		logger.info("collectPreprocessingData method invoked");
+		
+		try {
+			Map<String, String> headers = new HashMap<>();
+			headers.put("x-auth-token", request.getHeader("x-auth-token"));
+			headers.put("x-user-id", request.getHeader("x-user-id"));
+			headers.put("x-campaign-id", request.getHeader("x-campaign-id"));
+			headers.put("x-template-id", request.getHeader("x-template-id"));
+
+			Map<String, Object> preprocessingData = preprocessingService.collectPreprocessingData(headers);
+			return ResponseEntity.ok(preprocessingData);
+		} catch (Exception e) {
+			logger.error("Error collecting preprocessing data: {}", e.getMessage(), e);
+			return ResponseEntity.status(500)
+					.body(Map.of("error", "Failed to collect preprocessing data: " + e.getMessage()));
 		}
 	}
 }

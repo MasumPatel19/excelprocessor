@@ -9,7 +9,10 @@ public abstract class  ExcelProcessorContext {
 	protected Template getTemplateFromId(String templateId)
 	{
 		// make API call to template service and get details of the template
-		//	TODO: Step 1 - Make HTTP GET call to Template Service(Monitoring Service): GET /api/v1/campaign-mgmt-support/organizations/{orgID}/templates/{templateID}?filename=""
+		//	TODO: Step 1 - Make HTTP GET call to Template Service(Monitoring Service) :
+		//	TODO: Step 1.1 -  GET /api/v1/template-v3/{templateId}
+		//	from that above api takes orgid, name [filename]
+		//	TODO: Step 1.2 - GET /api/v1/campaign-mgmt-support/organizations/{orgID}/templates/{templateID}?filename=""
 		// create Template domain object from the template details
 		//	TODO: Step 2 - Parse JSON response to extract formulaMap structure
 		//	TODO: Step 3 - Convert formulaMap JSON to Map<String, JsonNode>

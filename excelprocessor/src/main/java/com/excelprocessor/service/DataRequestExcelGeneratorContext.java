@@ -23,6 +23,12 @@ public class DataRequestExcelGeneratorContext extends ExcelProcessorContext {
             // send the orgID and filename for getting template - getTemplateFromId(campaign.getTemplateId(),orgID,filename);
 			template = getTemplateFromId(campaign.getTemplateId());
 			formulaMap = template.getFormulaMap();
+
+            //  Handle null campaign from getCampaignFromId()
+            //  Handle null dataRequest from getDataRequestFromId()
+            //  Handle null template from getTemplateFromId()
+            //  Handle empty formulaMap
+            //  Throw appropriate exceptions with context
     }
 
     public Map<String, JsonNode> getFormulaMap() {
